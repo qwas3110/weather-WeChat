@@ -1,3 +1,14 @@
+// 天气描述转中文
+const weatherMap = {
+	'sunny': '晴天',
+	'cloudy': '多云',
+	'overcast': '阴',
+	'lightrain': '小雨',
+	'heavyrain': '大雨',
+	'snow': '雪'
+}
+
+
 Page({
 
   data: {
@@ -24,7 +35,7 @@ Page({
         console.log(temp, weather);
 				this.setData({
 					nowTemp:temp,
-					nowWeather:weather
+					nowWeather:weatherMap[weather]
 				})
 
       }
