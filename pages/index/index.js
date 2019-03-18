@@ -49,41 +49,11 @@ Page({
       // 调取成功后使用的方法
       success: (res) => {
         console.log(res.data)
-        const result = res.data.result;
-        const temp = result.now.temp + "°";
-        const weather = result.now.weather;
-        const imgSrc = `/img/${weather}-bg.png`;
-				
-				console.log(forecast);
-        console.log(temp, weather, imgSrc);
-        this.setData({
-          nowTemp: temp,
-          nowWeather: weatherMap[weather],
-          imgSrc: imgSrc,
-        });
-        // 动态设置导航栏颜色
-        wx.setNavigationBarColor({
-          frontColor: '#ffffff',
-          backgroundColor: weatherColorMap[weather]
-        })
-				// 设置时间 3个小时一次
-				// 创建一个空数组
-				let hourlyWeather = [];
-				// 引用数据
-				let forecast = result.forecast;
-				// 引入时间
-				let nowHour = new Date().getHours();
-				// 循环，将数据修改，导入相应位置
-				for (let x = 0; x < 24; x += 3) {
-					hourlyWeather.push({
-						time: `${(x + nowHour) % 24}时`,
-						icon: `/img/${forecast[x/3].weather}-icon.png`,
-						temp: `${forecast[x/3].temp}°`
-					})
-				};
-				hourlyWeather[0].time = "当前";
-				this.setData({ hourlyWeather: hourlyWeather})
-
+				// 获取数据
+				let result = res.data.result
+				// 调用
+        this.setNow(result);
+				this.setHourlyWeather(result);
       },
 			// 当完成数据更新后，关闭下拉刷新，在complete完成函数内执行
 			complete: () => {
@@ -91,7 +61,44 @@ Page({
 				// 没传入就不执行
 				callback && callback()
 			}
-
     })
-  }
+  },
+	// 显示当前天气
+	setNow(result) {
+		const temp = result.now.temp + "°";
+		const weather = result.now.weather;
+		const imgSrc = `/img/${weather}-bg.png`;
+		console.log(temp, weather, imgSrc);
+    // 同步到视图 
+		this.setData({
+			nowTemp: temp,
+			nowWeather: weatherMap[weather],
+			imgSrc: imgSrc,
+		});
+		// 动态设置导航栏颜色
+		wx.setNavigationBarColor({
+			frontColor: '#ffffff',
+			backgroundColor: weatherColorMap[weather]
+		})
+	},
+	// 显示未来几个小时的天气
+	setHourlyWeather(result) {
+		// 设置时间 3个小时一次
+		// 创建一个空数组
+		let hourlyWeather = [];
+		// 引用数据
+		let forecast = result.forecast;
+		// 引入时间
+		let nowHour = new Date().getHours();
+		// 循环，将数据修改，导入相应位置
+		for (let x = 0; x < 8; x++) {
+			hourlyWeather.push({
+				time: `${(x * 3 + nowHour) % 24}时`,
+				icon: `/img/${forecast[x].weather}-icon.png`,
+				temp: `${forecast[x].temp}°`
+			})
+		};
+		hourlyWeather[0].time = "当前";
+		this.setData({ hourlyWeather: hourlyWeather })
+	}
 })
