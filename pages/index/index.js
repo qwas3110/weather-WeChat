@@ -25,7 +25,7 @@ Page({
     nowTemp: '12°',
     nowWeather: '晴天',
     imgSrc: ``,
-		forecastList: [1,2,3,4,5,6,7,8,9]
+		forecastList: []
   },
   onPullDownRefresh() {
 		// 传入回调函数，当我自己刷新更新后，我就会停止
@@ -53,18 +53,32 @@ Page({
         const temp = result.now.temp + "°";
         const weather = result.now.weather;
         const imgSrc = `/img/${weather}-bg.png`;
-
+				
+				console.log(forecast);
         console.log(temp, weather, imgSrc);
         this.setData({
           nowTemp: temp,
           nowWeather: weatherMap[weather],
-          imgSrc: imgSrc
+          imgSrc: imgSrc,
         });
         // 动态设置导航栏颜色
         wx.setNavigationBarColor({
           frontColor: '#ffffff',
           backgroundColor: weatherColorMap[weather]
         })
+				// 设置时间 3个小时一次
+				let forecast = [];
+				let nowHour = new Date().getHours();
+				for (let x = 0; x < 24; x += 3) {
+					forecast.push({
+						time: `${(x + nowHour) % 24}时`,
+						icon: `/img/sunny-icon.png`,
+						temp: `12°`
+					})
+				};
+				forecast[0].time = "当前";
+				this.setData({forecastList:forecast})
+
       },
 			// 当完成数据更新后，关闭下拉刷新，在complete完成函数内执行
 			complete: () => {
