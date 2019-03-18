@@ -56,13 +56,32 @@
 /* 未来天气列表样式 */
 
 .forecast-list { 
-    display:flex 
+	display: flex;
+	
 } 
  
 .forecast-item { 
-    display:flex; 
-    width: 120rpx; 
-    flex-shrink: 0; 
-    font-size: 36rpx; 
-    line-height: 42rpx 
+	display: flex;
+	flex-direction: column;
+	align-items: center;  
+	width: 120rpx;
+	flex-shrink: 0;
+}
+
+.forecast-time {
+	font-size: 30rpx;
+	line-height: 42rpx;
+}
+
+.forecast-weather {
+	width: 60rpx;
+	height: 60rpx;
+	margin-top: 50rpx;
+	margin-bottom: 50rpx;
+}
+
+
+.forecast-temp {
+	font-size: 40rpx;
+	line-height: 64rpx;
 }
