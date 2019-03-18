@@ -115,8 +115,8 @@ Page({
 	},
 	// 点按事件
 	onTapDayWeather() {
-		wx.showToast({
-			title: 'Hello World',
+		wx.navigateTo({
+			url: "/pages/list/list"
 		})
 	}
 })
