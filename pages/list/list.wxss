@@ -1,1 +1,37 @@
-/* pages/list/list.wxss */
+
+.date-item { 
+	display: flex;
+	justify-content: space-between;
+	align-content: center;
+	border-bottom: 1px solid rgba(0,0, 0, 0.1);
+	padding-bottom: 30rpx;
+	padding-top: 30rpx;
+	
+	
+} 
+ 
+.day{ 
+	font-size: 40rpx;
+	line-height: 56rpx;
+	opacity: 0.6;
+} 
+ 
+.date{ 
+	opacity: 0.5; 
+  font-size: 25rpx; 
+  line-height: 35rpx; 
+} 
+ 
+.temp{ 
+	flex-grow: 1; 
+  padding-right: 60rpx; 
+  text-align: center; 
+  opacity: 0.8; 
+  font-size: 40rpx; 
+  line-height: 56rpx; 
+} 
+ 
+.weather-icon{ 
+	width: 90rpx;
+	height: 90rpx;
+}
