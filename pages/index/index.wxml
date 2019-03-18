@@ -1,5 +1,5 @@
 <view class='weather-wrapper'>
 	<view class='temp'>{{nowTemp}}</view>
 	<view class='weather'>{{nowWeather}}</view>
-	<image class='weather-bg' src='/img/sunny-bg.png' mode='scaleToFil'></image>
+	<image class='weather-bg' src='{{imgSrc}}' mode='scaleToFil'></image>
 </view>
