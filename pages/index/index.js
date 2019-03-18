@@ -25,7 +25,9 @@ Page({
     nowTemp: '12°',
     nowWeather: '晴天',
     imgSrc: ``,
-		hourlyWeather: []
+		hourlyWeather: [],
+		todayTemp:'',
+		todayDate: ''
   },
   onPullDownRefresh() {
 		// 传入回调函数，当我自己刷新更新后，我就会停止
@@ -54,6 +56,7 @@ Page({
 				// 调用
         this.setNow(result);
 				this.setHourlyWeather(result);
+				this.setToady(result);
       },
 			// 当完成数据更新后，关闭下拉刷新，在complete完成函数内执行
 			complete: () => {
@@ -100,5 +103,14 @@ Page({
 		};
 		hourlyWeather[0].time = "当前";
 		this.setData({ hourlyWeather: hourlyWeather })
+	},
+	// 当天最高最低气温
+	setToady(result) {
+		let date = new Date();
+		let today = result.today;
+		this.setData({
+			todayTemp: `${today.minTemp}° - ${today.maxTemp}°`,
+			todayDate: `${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()} 今天`
+		})
 	}
 })
