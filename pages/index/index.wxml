@@ -11,7 +11,7 @@
 
 <scroll-view scroll-x>
   <view class='forecast-list'>
-    <view class='forecast-item' wx:for='{{forecastList}}' wx:key="*this" wx:for-item='forecast'>
+    <view class='forecast-item' wx:for='{{hourlyWeather}}' wx:key="*this" wx:for-item='forecast'>
       <view class='forecast-time'>{{forecast.time}}</view>
       <image class='forecast-weather' src='{{forecast.icon}}'></image>
       <view class='forecast-temp'>{{forecast.temp}}</view>

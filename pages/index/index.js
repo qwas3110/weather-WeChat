@@ -25,7 +25,7 @@ Page({
     nowTemp: '12°',
     nowWeather: '晴天',
     imgSrc: ``,
-		forecastList: []
+		hourlyWeather: []
   },
   onPullDownRefresh() {
 		// 传入回调函数，当我自己刷新更新后，我就会停止
@@ -67,17 +67,22 @@ Page({
           backgroundColor: weatherColorMap[weather]
         })
 				// 设置时间 3个小时一次
-				let forecast = [];
+				// 创建一个空数组
+				let hourlyWeather = [];
+				// 引用数据
+				let forecast = result.forecast;
+				// 引入时间
 				let nowHour = new Date().getHours();
+				// 循环，将数据修改，导入相应位置
 				for (let x = 0; x < 24; x += 3) {
-					forecast.push({
+					hourlyWeather.push({
 						time: `${(x + nowHour) % 24}时`,
-						icon: `/img/sunny-icon.png`,
-						temp: `12°`
+						icon: `/img/${forecast[x/3].weather}-icon.png`,
+						temp: `${forecast[x/3].temp}°`
 					})
 				};
-				forecast[0].time = "当前";
-				this.setData({forecastList:forecast})
+				hourlyWeather[0].time = "当前";
+				this.setData({ hourlyWeather: hourlyWeather})
 
       },
 			// 当完成数据更新后，关闭下拉刷新，在complete完成函数内执行
