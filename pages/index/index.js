@@ -24,7 +24,8 @@ Page({
     string: 'Hello world',
     nowTemp: '12°',
     nowWeather: '晴天',
-    imgSrc: ``
+    imgSrc: ``,
+		forecastList: [1,2,3,4,5,6,7,8,9]
   },
   onPullDownRefresh() {
 		// 传入回调函数，当我自己刷新更新后，我就会停止
