@@ -112,5 +112,11 @@ Page({
 			todayTemp: `${today.minTemp}° - ${today.maxTemp}°`,
 			todayDate: `${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()} 今天`
 		})
+	},
+	// 点按事件
+	onTapDayWeather() {
+		wx.showToast({
+			title: 'Hello World',
+		})
 	}
 })
