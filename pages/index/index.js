@@ -19,6 +19,14 @@ const weatherColorMap = {
 
 // 引入SDK核心类
 const QQMapWX = require('../../libs/qqmap-wx-jssdk.js')
+// 创建文本变量
+const UNPROMPTED = 0
+const UNAUTHORIZED = 1
+const AUTHORIZED = 2
+
+const UNPROMPTED_TIPS = "点击获取当前位置"
+const UNAUTHORIZED_TIPS = "点击开启位置权限"
+const AUTHORIZED_TIPS = ""
 
 Page({
 
@@ -30,8 +38,9 @@ Page({
     hourlyWeather: [],
     todayTemp: '',
     todayDate: '',
-		city: '厦门市',
-		locationTipsText: '点击获取当前位置'
+    city: '厦门市',
+    locationTipsText: UNPROMPTED_TIPS,
+    locationAuthType: UNPROMPTED
   },
   onPullDownRefresh() {
     // 传入回调函数，当我自己刷新更新后，我就会停止
@@ -42,7 +51,7 @@ Page({
 
   onLoad() {
     this.qqmapsdk = new QQMapWX({
-			key: 'H2TBZ-7XC6P-765DS-VGG53-QDCGQ-WEFMX'
+      key: 'H2TBZ-7XC6P-765DS-VGG53-QDCGQ-WEFMX'
     });
     this.getNow();
   },
@@ -126,42 +135,49 @@ Page({
   },
   // 点按事件
   onTapDayWeather() {
-		console.log()
+    console.log()
     wx.navigateTo({
-			url: `/pages/list/list?city=${this.data.city}`
+      url: `/pages/list/list?city=${this.data.city}`
     })
   },
 
   // 获取经纬度
   onTapLocation() {
-
+    this.getLocation();
+  },
+  getLocation() {
     wx.getLocation({
-			type: 'gcj02',
+      type: 'gcj02',
       success: (res) => {
-				console.log(res.longitude,res.latitude);
-				this.qqmapsdk.reverseGeocoder({
-					location: {
-						latitude: res.latitude,
-						longitude: res.longitude
-					},
-					success: (res) => {
-						console.log(res);
-						const city = res.result.address_component.city;
+        this.setData({
+          locationAuthType: AUTHORIZED,
+          locationTipsText: AUTHORIZED_TIPS
+        });
+        console.log(res.longitude, res.latitude);
+        this.qqmapsdk.reverseGeocoder({
+          location: {
+            latitude: res.latitude,
+            longitude: res.longitude
+          },
+          success: (res) => {
+            console.log(res);
+            const city = res.result.address_component.city;
 
-						this.setData({
-							city:city,
-							locationTipsText: ''
-						})
-						this.getNow();
-					}
-				})
+            this.setData({
+              city: city,
+              locationTipsText: ''
+            })
+            this.getNow();
+          }
+        })
       },
-			// 权限被拒绝后
-			fail: () => {
-				wx.showToast({
-					title: '权限被拒绝',
-				})
-			}
+      // 权限被拒绝后
+      fail: () => {
+        this.setData({
+          locationAuthType: UNAUTHORIZED,
+          locationTipsText: UNAUTHORIZED_TIPS
+        })
+      }
     })
   }
 })
