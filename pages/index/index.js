@@ -29,7 +29,9 @@ Page({
     imgSrc: ``,
     hourlyWeather: [],
     todayTemp: '',
-    todayDate: ''
+    todayDate: '',
+		city: '厦门市',
+		locationTipsText: '点击获取当前位置'
   },
   onPullDownRefresh() {
     // 传入回调函数，当我自己刷新更新后，我就会停止
@@ -50,7 +52,7 @@ Page({
     wx.request({
       url: 'https://test-miniprogram.com/api/weather/now',
       data: {
-        city: '广州'
+        city: this.data.city
       },
       header: {
         'content-type': 'application/json' // 默认值
@@ -145,10 +147,15 @@ Page({
 						console.log(res);
 						console.log(res.result.address_component.city);
 						const city = res.result.address_component.city;
+
+						this.setData({
+							city:city,
+							locationTipsText: ''
+						})
+						this.getNow();
 					}
 				})
       }
-
     })
   }
 })
