@@ -29,11 +29,14 @@ Page({
 	},
 	setWeekWeather(result) {
 		let weekWeather = [];
-		let date = new Date();
+		
 
 		for (let x = 0; x < result.length; x++) {
+			let date = new Date();
+			// 获取一个新的日期，加1，以此类推
+			date.setDate(date.getDate() + x)
 			weekWeather.push({
-				day: `${dayMap[x]}`,
+				day: `${dayMap[date.getDay()]}`,
 				date: `${date.getFullYear()}-${date.getMonth() +x}-${date.getDate()}`,
 				imgSrc: `/img/${result[x].weather}-icon.png`,
 				temp: `${result[x].minTemp}°-${result[x].maxTemp}°`
