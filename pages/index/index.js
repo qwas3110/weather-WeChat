@@ -155,7 +155,13 @@ Page({
 						this.getNow();
 					}
 				})
-      }
+      },
+			// 权限被拒绝后
+			fail: () => {
+				wx.showToast({
+					title: '权限被拒绝',
+				})
+			}
     })
   }
 })
