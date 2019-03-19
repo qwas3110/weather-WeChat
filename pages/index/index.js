@@ -126,8 +126,9 @@ Page({
   },
   // 点按事件
   onTapDayWeather() {
+		console.log()
     wx.navigateTo({
-      url: "/pages/list/list"
+			url: `/pages/list/list?city=${this.data.city}`
     })
   },
 
@@ -145,7 +146,6 @@ Page({
 					},
 					success: (res) => {
 						console.log(res);
-						console.log(res.result.address_component.city);
 						const city = res.result.address_component.city;
 
 						this.setData({
