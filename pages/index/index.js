@@ -53,7 +53,27 @@ Page({
     this.qqmapsdk = new QQMapWX({
       key: 'H2TBZ-7XC6P-765DS-VGG53-QDCGQ-WEFMX'
     });
-    this.getNow();
+    wx.getSetting({
+      success: res => {
+        let auth = res.authSetting['scope.userLocation']
+        let locationAuthType = auth ? AUTHORIZED :
+          (auth === false) ? UNAUTHORIZED : UNPROMPTED
+        let locationTipsText = auth ? AUTHORIZED_TIPS :
+          (auth === false) ? UNAUTHORIZED_TIPS : UNPROMPTED_TIPS
+        this.setData({
+          locationAuthType: locationAuthType,
+          locationTipsText: locationTipsText
+        })
+
+        if (auth)
+          this.getCityAndWeather()
+        else
+          this.getNow() //使用默认城市广州 
+      },
+      fail: () => {
+        this.getNow() //使用默认城市广州 
+      }
+    })
   },
 
   //将调用数据单独写一个模块，方便调用刷新 
@@ -143,35 +163,29 @@ Page({
 
   // 获取经纬度
   onTapLocation() {
-    this.getLocation();
+    this.getCityAndWeather();
   },
-  getLocation() {
+  getCityAndWeather() {
     wx.getLocation({
-      type: 'gcj02',
-      success: (res) => {
+      success: res => {
         this.setData({
           locationAuthType: AUTHORIZED,
           locationTipsText: AUTHORIZED_TIPS
-        });
-        console.log(res.longitude, res.latitude);
+        })
         this.qqmapsdk.reverseGeocoder({
           location: {
             latitude: res.latitude,
             longitude: res.longitude
           },
-          success: (res) => {
-            console.log(res);
-            const city = res.result.address_component.city;
-
+          success: res => {
+            let city = res.result.address_component.city
             this.setData({
               city: city,
-              locationTipsText: ''
             })
-            this.getNow();
+            this.getNow()
           }
         })
       },
-      // 权限被拒绝后
       fail: () => {
         this.setData({
           locationAuthType: UNAUTHORIZED,
